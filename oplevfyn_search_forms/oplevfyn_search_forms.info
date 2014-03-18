@@ -1,0 +1,9 @@
+name = Oplev fyn search forms
+description = Customizes exposed filters for oplevfyn
+core = 7.x
+; Examples - use at will
+;package = Views
+;dependencies[] = views
+;dependencies[] = panels
+;files[] = example.test
+;configure = admin/config/content/example

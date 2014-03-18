@@ -1,0 +1,78 @@
+<?php
+/**
+ * This module changes the exposed filters used on category pages
+ * on Oplevfyn BOSA site.
+ *
+ * @author Thomas Thune Hansen <tth@bellcom.dk>
+ * @copyright bellcom open source aps
+ */
+
+function oplevfyn_search_forms_form_alter(&$form, &$form_state, $form_id) {
+  if($form_id == 'views_exposed_form' && arg(0) == 'taxonomy') {
+  //}
+  //if($form['form_token']['#default_value'] == 'ktAUrtWhCoibvUXQq2i_Yyv6f7yPk2uRvN6r56XZDEA') {
+    global $language;
+    $search_description = array(
+      'operator' => 'search_description_item',
+      'value' => 'field_search_description',
+      'label' => '',
+    );
+
+    array_unshift($form['#info'], $search_description);
+    
+    $form['field_search_description'] = array(
+      '#type' => 'item',
+      '#markup' => '<div class="search-header">' . t('Find your favourites:') . '</div><div class="search-description">' . t('Use the fields below to find your favourites. Tell us who you are, what you prefer to do and where on Fyn you prefer to be.') . '</div>',
+    );
+    
+    $form['field_sale_kategori_tid_i18n']['#options']['All'] = t('Select activities');
+   
+    // Views exposed filters doesn't handle translations, so we do.
+    foreach($form['field_sale_kategori_tid_i18n']['#options'] as $key => $value){
+      if(!is_numeric($key)){
+      	continue;
+      }
+      $term = taxonomy_term_load($key);
+      $form['field_sale_kategori_tid_i18n']['#options'][$key] = $term->name_field[$language->language][0]['value'];
+    }
+    foreach($form['field_offer_type_tid_i18n']['#options'] as $key => $value){
+      if(!is_numeric($key)){
+      	continue;
+      }
+      $term = taxonomy_term_load($key);
+      $form['field_offer_type_tid_i18n']['#options'][$key] = $term->name_field[$language->language][0]['value'];
+    }
+
+    $form['field_offer_type_tid_i18n']['#options']['All'] = t('Select Theme');
+
+    $form['#info']['filter-field_sale_kategori_tid_i18n']['label'] = "";
+    $form['#info']['filter-field_offer_type_tid_i18n']['label'] = "";
+    $form['#info']['filter-field_geografi_kategori_tid_i18n']['label'] = "";
+    $form['#info']['filter-field_offer_dato_value']['label'] = "";
+    $form['#info']['filter-field_offer_dato_value_1']['label'] = "";
+
+    $prefix = $form['field_offer_dato_value']['value']['#prefix'];
+    $form['field_offer_dato_value']['value']['#prefix'] = '<div class="search-date-description">' . t('Select dates:') . $prefix;
+
+    $form['field_offer_dato_value']['value']['#attributes']["placeholder"] = t('From:');
+    $form['field_offer_dato_value_1']['value']['#attributes']["placeholder"] = t('To:');
+
+    //load term for page 
+    $t_entity = entity_load('taxonomy_term', array(arg(2)));
+    $t_entity = reset($t_entity);
+  
+    drupal_add_js(drupal_get_path('module', 'oplevfyn_search_forms') . '/oplevfyn_search.js');
+    // "tårn" term
+    if($t_entity->vid == 2) {
+      // unset tårn from item
+      unset($form['#info']['filter-field_offer_type_tid_i18n']);
+      unset($form['field_offer_type_tid_i18n']);
+      $form['field_geografi_kategori_tid_i18n']['#options']['All'] = t('Select area');
+    }
+    // geografy term
+    else if( $t_entity->vid == 7) {
+      drupal_add_js(drupal_get_path('module', 'oplevfyn_search_forms') . '/change_geografy.js');
+      $form['field_geografi_kategori_tid_i18n']['#options']['All'] = t('Select another area');
+    }
+  }
+}

@@ -1,0 +1,17 @@
+<?php
+/**
+ *
+ * @author Thomas Thune Hansen <tth@bellcom.dk>
+ * @copyright bellcom open source aps
+ */
+
+function oplevfyn_checkout_forms_form_alter(&$form, &$form_state, $form_id) {
+  if($form_id == "commerce_checkout_form_checkout"){
+    $form['buttons']['continue']['#value'] = t('Confirm order');
+  }
+  if($form_id == "commerce_checkout_form_review"){
+    $form['buttons']['continue']['#value'] = t('Confirm and continue to payment');
+  }
+
+
+}
