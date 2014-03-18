@@ -48,8 +48,8 @@ function oplevfyn_search_forms_form_alter(&$form, &$form_state, $form_id) {
     $form['#info']['filter-field_sale_kategori_tid_i18n']['label'] = "";
     $form['#info']['filter-field_offer_type_tid_i18n']['label'] = "";
     $form['#info']['filter-field_geografi_kategori_tid_i18n']['label'] = "";
-    $form['#info']['filter-field_offer_dato_value']['label'] = "";
-    $form['#info']['filter-field_offer_dato_value_1']['label'] = "";
+    $form['#info']['filter-field_udl_bsdato_value']['label'] = "";
+    $form['#info']['filter-field_udl_bsdato_value_1']['label'] = "";
 
     $prefix = $form['field_offer_dato_value']['value']['#prefix'];
     $form['field_offer_dato_value']['value']['#prefix'] = '<div class="search-date-description">' . t('Select dates:') . $prefix;
