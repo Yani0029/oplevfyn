@@ -56,7 +56,8 @@ function oplevfyn_search_forms_form_alter(&$form, &$form_state, $form_id) {
 
     $form['field_startdato_value']['value']['#attributes']["placeholder"] = t('From:');
     $form['field_udl_bsdato_value']['value']['#attributes']["placeholder"] = t('To:');
-
+    $form['field_startdato_value']['value']['#date_format'] = 'd/m/Y';
+    $form['field_udl_bsdato_value']['value']['#date_format'] = 'd/m/Y';
     //load term for page 
     $t_entity = entity_load('taxonomy_term', array(arg(2)));
     $t_entity = reset($t_entity);
